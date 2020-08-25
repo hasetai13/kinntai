@@ -2,7 +2,7 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-require ('/../vendor/autoload.php');
+require ('../vendor/autoload.php');
 
 // 各種設定
 $config['displayErrorDetails'] = true;
@@ -34,8 +34,8 @@ $container['db'] = function ($c) {
     return $pdo;
 };
 
-// チケットの一覧
-$app->get('/tickets', function (Request $request, Response $response, array $args) {
+// 新規アカウント作成フォームの表示
+$app->get('/board/sighnin', function (Request $request, Response $response, array $args) {
     $sql = 'SELECT * FROM tickets';
     $stmt = $this->db->query($sql);
     $tickets = [];
@@ -46,12 +46,12 @@ $app->get('/tickets', function (Request $request, Response $response, array $arg
     return $this->view->render($response, '/tickets/index.php', $data);
 });
 
-// 新規作成用フォームの表示
+// ログインフォームの表示
 $app->get('/tickets/create', function (Request $request, Response $response, array $args) {
     return $this->view->render($response, '/tickets/create.php');
 });
 
-// チケットの新規作成
+// トップページの表示
 $app->post('/tickets', function (Request $request, Response $response, array $args) {
     $subject = $request->getParsedBodyParam('subject');
     //ここに保存処理を書く
@@ -66,24 +66,56 @@ $app->post('/tickets', function (Request $request, Response $response, array $ar
     return $response->withRedirect("/tickets");
 });
 
-// チケットの表示
-$app->get('/tickets/{id}', function (Request $request, Response $response, array $args) {
 
+
+
+
+
+
+///////////以下新規ファイル//////////////////
+////$app->get('/tickets/create', function (Request $request, Response $response, array $args) {
+//    return $this->view->render($response, '/tickets/create.php');
+//});
+
+
+
+// 新規アカウント作成フォームの表示
+$app->get('/board/register', function (Request $request, Response $response, array $args) {
+    //print ("新規作成フォームの表示");
+    return $this->view->render($response, '/board/register.html');
 });
 
-// チケット編集用フォームの表示
-$app->get('/tickets/{id}/edit', function (Request $request, Response $response, array $args) {
-
+// ログインフォームの表示
+$app->get('/board/login', function (Request $request, Response $response) {
+    //$response->getBody()->write('店長側：ログイン画面');
+    return $this->view->render($response, '/board/login.html');
+    return $response;
 });
 
-// チケットの更新
-$app->patch('/tickets/{id}', function (Request $request, Response $response, array $args) {
-
+// トップページの表示
+$app->get('/board/top', function (Request $request, Response $response) {
+    //$response->getBody()->write('店長側：トップページ');
+    return $this->view->render($response, '/board/top.html');
+    return $response;
 });
 
-// チケットの削除
-$app->delete('/tickets/{id}', function (Request $request, Response $response, array $args) {
+// 従業員一覧ページの表示
+$app->get('/board/employees', function (Request $request, Response $response) {
+    //$response->getBody()->write('店長側：従業員一覧画面');
+    return $this->view->render($response, '/board/employees.html');
+    //return $response;
+});
 
+// 月末処理ページの表示
+$app->get('/board/process', function (Request $request, Response $response) {
+    $response->getBody()->write('店長側：月末処理：開発中');
+    //return $this->view->render($response, '/board/prosessing.html');
+});
+
+// システム設定ページの表示
+$app->get('/board/system-settings', function (Request $request, Response $response) {
+    $response->getBody()->write('店長側：システム設定');
+    //return $this->view->render($response, '/board/setting.html');
 });
 
 $app->run();
