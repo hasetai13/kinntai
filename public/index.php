@@ -68,10 +68,6 @@ $app->post('/tickets', function (Request $request, Response $response, array $ar
 
 
 
-
-
-
-
 ///////////以下新規ファイル//////////////////
 ////$app->get('/tickets/create', function (Request $request, Response $response, array $args) {
 //    return $this->view->render($response, '/tickets/create.php');
@@ -109,12 +105,14 @@ $app->get('/board/employees', function (Request $request, Response $response) {
 // 月末処理ページの表示
 $app->get('/board/process', function (Request $request, Response $response) {
     $response->getBody()->write('店長側：月末処理：開発中');
+    return $this->view->render($response, '/board/404.html');
     //return $this->view->render($response, '/board/prosessing.html');
 });
 
 // システム設定ページの表示
-$app->get('/board/system-settings', function (Request $request, Response $response) {
+$app->get('/board/settings', function (Request $request, Response $response) {
     $response->getBody()->write('店長側：システム設定');
+    return $this->view->render($response, '/board/404.html');
     //return $this->view->render($response, '/board/setting.html');
 });
 
